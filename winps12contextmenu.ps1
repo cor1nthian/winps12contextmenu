@@ -18,13 +18,33 @@
     .PARAMETER ContextMenuOption
     Optional. 1 position. Default - "Find files by content". Context menu option name
 
+    .PARAMETER UsePWSH
+    Optional. 2 position. Default - false. If true, always use pwsh as script environment placing the script to context menu
+    
 #>
 
-Param ( [Parameter(Position = 0, Mandatory = $true)]  [System.String] $ScriptPath,
-        [Parameter(Position = 1, Mandatory = $false)] [System.String] $ContextMenuOption = "Find files by content" )
+Param ( [Parameter(Position = 0, Mandatory = $true)]  [System.String]  $ScriptPath,
+        [Parameter(Position = 1, Mandatory = $false)] [System.String]  $ContextMenuOption = "Find files by content",
+        [Parameter(Position = 2, Mandatory = $false)] [System.Boolean] $UsePWSH = $false )
 
 ############### SCRIPT ###############
-[System.String] $psExe = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+[System.String] $psExe
+if($UsePWSH) {
+    $psExe = "$env:PROGRAMFILES\PowerShell\7\pwsh.exe"
+} else {
+    if(Test-Path "$env:PROGRAMFILES\PowerShell\7\pwsh.exe") {
+        $psExe = "$env:PROGRAMFILES\PowerShell\7\pwsh.exe"
+    } else {
+        if(Test-Path "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe") {
+            $psExe = "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe"
+        } else {
+            Write-Host -ForegroundColor Red "NO POWERSHELL EXECUTABLE FOUND"
+            Write-Host "`nPRESS ANY KEY TO CONTINUE"
+            [System.Void][System.Console]::ReadKey($true)
+            Exit 1
+        }
+    }
+}
 [System.String[]] $subKeys = @( 'Directory', 'Directory\Background', 'Drive' )
 
 foreach ($keyName in $subKeys) {
