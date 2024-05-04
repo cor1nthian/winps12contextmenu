@@ -7,10 +7,10 @@
     Adds PowerShell script to explorer context menu
 
     .INPUTS
-    PAth to the script (mandatory), context menu title (optional) and UsePWSH switch
+    Path to the script (mandatory), context menu title (optional) and UsePWSH switch
 
     .OUTPUTS
-    None
+    Warning in case no suirable executable found, in other cases - none
 
     .PARAMETER ScriptPath
     Mandatory. 0 position. Path to the script file
