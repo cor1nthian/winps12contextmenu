@@ -7,7 +7,7 @@
     Adds PowerShell script to explorer context menu
 
     .INPUTS
-    PAth to the script (mandatory) and context menu title (optional)
+    PAth to the script (mandatory), context menu title (optional) and UsePWSH switch
 
     .OUTPUTS
     None
